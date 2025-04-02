@@ -98,7 +98,7 @@ src/
 
 ### 데이터베이스 설정
 
-1. `src/main/resources/hibernate.cfg.xml` 파일에서 데이터베이스 연결 정보 설정
+1. `HibernateUtil.java` 파일에서 데이터베이스 연결 정보 설정
 2. HikariCP 설정 확인 (기본값 사용 가능)
 
 ### 빌드 및 실행
@@ -124,7 +124,7 @@ src/
 - [O] 데이터베이스 연동
 - [X] Channel Server 연동
 
-### Channel Server
+### Character Server
 - [X] 로그인 세션 및 영속성 관리
 
 ### Game Server
