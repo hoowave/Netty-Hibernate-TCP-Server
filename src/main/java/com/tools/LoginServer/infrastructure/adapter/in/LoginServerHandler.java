@@ -15,11 +15,9 @@ import io.netty.util.CharsetUtil;
 
 public class LoginServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private final LoginPort loginPort;
-    private final LoginRepositoryPort loginRepositoryPort;
 
-    public LoginServerHandler(LoginPort loginPort, LoginRepositoryPort loginRepositoryPort) {
+    public LoginServerHandler(LoginPort loginPort) {
         this.loginPort = loginPort;
-        this.loginRepositoryPort = loginRepositoryPort;
     }
 
     @Override
@@ -30,7 +28,6 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
             case PING:
                 var pingInPacket = new PingPacket.PingInPacket(inPacket);
                 outPacket = loginPort.ping(pingInPacket);
-                loginRepositoryPort.test();
                 break;
             case LOGIN:
                 var loginInPacket = new LoginPacket.LoginInPacket(inPacket);

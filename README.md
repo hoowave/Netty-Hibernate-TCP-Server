@@ -7,7 +7,8 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 - **유연한 통신 프로토콜**: 요청 패킷에 따라 패킷 기반 또는 JSON 기반 응답 타입 지원
 - **비동기 이벤트 처리**: Netty의 이벤트 루프를 활용한 고성능 네트워크 처리
 - **도메인 중심 설계**: 헥사고날 아키텍처를 통한 비즈니스 로직의 독립성 확보
-- **데이터 영속성**: Hibernate를 활용한 효율적인 데이터베이스 연동
+- **데이터 영속성**: Hibernate와 HikariCP를 활용한 효율적인 데이터베이스 연동
+- **보안**: JWT 기반의 사용자 인증 시스템
 
 ## 패킷 구조
 
@@ -75,7 +76,7 @@ src/
 1. **수신**: Netty 채널을 통한 패킷 수신
 2. **디코딩**: 커스텀 프로토콜에 따른 패킷 디코딩
 3. **처리**: 도메인 로직을 통한 비즈니스 처리
-4. **영속화**: Hibernate를 통한 데이터 저장
+4. **영속화**: Hibernate와 HikariCP를 통한 데이터 저장
 5. **응답**: 처리 결과를 클라이언트에게 전송 (ResponseType에 따라 PACKET 또는 JSON 형식)
 
 ## 기술 스택
@@ -83,6 +84,8 @@ src/
 - **Java 17**
 - **Netty**: 비동기 이벤트 기반 네트워크 프레임워크
 - **Hibernate**: JPA 구현체
+- **HikariCP**: 고성능 JDBC 커넥션 풀
+- **JWT**: 사용자 인증 및 권한 관리
 - **Gradle**: 빌드 도구
 
 ## 시작하기
@@ -91,6 +94,12 @@ src/
 
 1. JDK 17 설치
 2. Gradle 8.0 이상 설치
+3. MySQL 8.0 이상 설치 및 설정
+
+### 데이터베이스 설정
+
+1. `src/main/resources/hibernate.cfg.xml` 파일에서 데이터베이스 연결 정보 설정
+2. HikariCP 설정 확인 (기본값 사용 가능)
 
 ### 빌드 및 실행
 
@@ -101,16 +110,18 @@ src/
 # 서버 실행
 ./gradlew bootRun
 ```
-
 ## 구현 현황
 
 ### 공통
-- [ ] Hibernate 연동
+- [O] Hibernate 연동
+- [O] HikariCP 연동
+- [O] JWT 인증 시스템
 
 ### Login Server
 - [O] 프로토콜 정의
 - [O] JWT 패킷 복호화
 - [O] 인증
+- [O] 데이터베이스 연동
 - [X] Channel Server 연동
 
 ### Channel Server
@@ -123,11 +134,14 @@ src/
 - [ ] 패킷 암호화
 - [ ] 모니터링 시스템
 - [ ] 성능 최적화
+- [ ] 로그인 세션 관리 개선
+- [ ] 사용자 권한 관리 시스템
 
 ## 참고 자료
 
 - [Netty 공식 문서](https://netty.io/wiki/user-guide-for-4.x.html)
 - [Hibernate 공식 문서](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html)
+- [HikariCP 공식 문서](https://github.com/brettwooldridge/HikariCP)
 - [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/)
 
 ## 라이선스

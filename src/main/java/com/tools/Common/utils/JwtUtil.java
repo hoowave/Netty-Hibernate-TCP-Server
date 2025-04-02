@@ -10,7 +10,7 @@ public class JwtUtil {
     private final SecretKey secretKey;
 
     public JwtUtil() {
-        this.secretKey = Keys.hmacShaKeyFor("your_secret_key_for_jwt".getBytes());
+        this.secretKey = Keys.hmacShaKeyFor("".getBytes());
     }
 
     public String validateToken(String token) {

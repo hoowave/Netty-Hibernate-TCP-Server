@@ -18,8 +18,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class LoginServer {
     private final JwtUtil jwtUtil = new JwtUtil();
-    private final LoginPort loginPort = new LoginService(jwtUtil);
     private final LoginRepositoryPort loginRepositoryPort = new LoginRepositoryAdapter();
+    private final LoginPort loginPort = new LoginService(loginRepositoryPort, jwtUtil);
 
     private EventLoopGroup bossGroup = new NioEventLoopGroup();
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -34,7 +34,7 @@ public class LoginServer {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         socketChannel.pipeline()
-                                .addLast(new LoginServerHandler(loginPort, loginRepositoryPort));
+                                .addLast(new LoginServerHandler(loginPort));
                     }
                 })
                 .option(ChannelOption.SO_BACKLOG, 128)
