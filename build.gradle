@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.tools'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation("io.netty:netty-all:4.1.42.Final")
+    implementation("com.mysql:mysql-connector-j:8.3.0")
+    implementation("org.hibernate:hibernate-core:5.6.15.Final")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+}
+test {
+    useJUnitPlatform()
+}
