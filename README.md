@@ -158,21 +158,7 @@ src/
 3. MariaDB 10.0 이상 설치 및 설정
 
 ### 데이터베이스 설정
-
-1. `src/main/java/com/tools/Common/db/HibernateUtil.java` 파일에서 데이터베이스 연결 정보 설정
-   ```java
-   HikariConfig config = new HikariConfig();
-   config.setJdbcUrl("jdbc:mariadb://localhost:3306/d_toolbox");
-   config.setUsername("hoowave");
-   config.setPassword("");
-   config.setMaximumPoolSize(10);
-   config.setMinimumIdle(2);
-   ```
-2. 엔티티 클래스 등록
-   ```java
-   configuration.addAnnotatedClass(Account.class);
-   configuration.addAnnotatedClass(Game.class);
-   ```
+`src/main/java/com/tools/Common/db/HibernateUtil.java` 파일에서 데이터베이스 연결 정보 설정
 
 ### 빌드 및 실행
 
