@@ -1,4 +1,4 @@
-package com.tools.Common.db.core.enums;
+package com.tools.Common.db.entity.enums;
 
 public enum AccountRole {
     ADMIN,

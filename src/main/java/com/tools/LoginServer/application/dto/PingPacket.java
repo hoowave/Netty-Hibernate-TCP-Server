@@ -8,7 +8,7 @@ import com.tools.Common.packet.enums.ResponseCode;
 
 public class PingPacket {
 
-    public static class PingInPacket extends InPacket{
+    public static class PingInPacket extends InPacket {
         public PingInPacket(InPacket inPacket) {
             super(inPacket);
         }

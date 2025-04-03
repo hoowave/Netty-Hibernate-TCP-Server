@@ -1,6 +1,6 @@
-package com.tools.Common.db.core;
+package com.tools.Common.db.entity;
 
-import com.tools.Common.db.core.enums.AccountRole;
+import com.tools.Common.db.entity.enums.AccountRole;
 import jakarta.persistence.*;
 
 import java.text.SimpleDateFormat;
@@ -35,17 +35,6 @@ public class Account {
     @Column(nullable = false)
     private String created_At;
 
-    public Account(String name, String userId, String password, String email, String phone, AccountRole role) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        this.name = name;
-        this.user_id = userId;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.role = role;
-        this.created_At = format.format(new Date());
-    }
-
     public Account() {}
 
     @Override
@@ -60,5 +49,9 @@ public class Account {
                 ", role=" + role +
                 ", created_At='" + created_At + '\'' +
                 '}';
+    }
+
+    public String getUserId(){
+        return user_id;
     }
 }

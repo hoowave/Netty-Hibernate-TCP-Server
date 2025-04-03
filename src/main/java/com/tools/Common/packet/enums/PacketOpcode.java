@@ -6,7 +6,9 @@ public enum PacketOpcode {
     SUCCESS(0x4631),
     FAIL(0x4632),
     PING(0x3031),
-    LOGIN(0x3032);
+    LOGIN(0x3032),
+    CHARACTER(0x3033),
+    ;
 
     private final int value;
 

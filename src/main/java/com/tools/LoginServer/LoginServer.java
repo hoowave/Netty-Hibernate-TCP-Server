@@ -1,6 +1,5 @@
 package com.tools.LoginServer;
 
-import com.tools.Common.utils.JsonUtil;
 import com.tools.Common.utils.JwtUtil;
 import com.tools.LoginServer.application.port.in.LoginPort;
 import com.tools.LoginServer.application.port.out.LoginRepositoryPort;
@@ -27,8 +26,8 @@ public class LoginServer {
     private int port = 14001;
 
     public void run() throws InterruptedException {
-        ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup)
+        ServerBootstrap loginServerBootstrap = new ServerBootstrap();
+        loginServerBootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -39,6 +38,7 @@ public class LoginServer {
                 })
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
-        ChannelFuture f = bootstrap.bind(port).sync();
+        ChannelFuture loginServerFuture = loginServerBootstrap.bind(port).sync();
+        System.out.println("로그인 서버 오픈 : " + port);
     }
 }

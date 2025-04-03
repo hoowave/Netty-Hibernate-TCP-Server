@@ -1,6 +1,6 @@
 package com.tools.Common.db;
 
-import com.tools.Common.db.core.Account;
+import com.tools.Common.db.entity.Account;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.SessionFactory;
@@ -30,7 +30,8 @@ public class HibernateUtil {
             configuration
                     .setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect")
                     .setProperty("hibernate.show_sql", "true")
-                    .addAnnotatedClass(Account.class);
+                    .addAnnotatedClass(Account.class)
+                    .addAnnotatedClass(Character.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySetting("hibernate.connection.datasource", dataSource)
