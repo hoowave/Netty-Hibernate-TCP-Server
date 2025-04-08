@@ -1,6 +1,7 @@
 package com.tools.Common.db;
 
 import com.tools.Common.db.entity.Account;
+import com.tools.Common.db.entity.Game;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.SessionFactory;
@@ -27,17 +28,21 @@ public class HibernateUtil {
             DataSource dataSource = new HikariDataSource(config);
 
             Configuration configuration = new Configuration();
-            configuration
-                    .setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect")
-                    .setProperty("hibernate.show_sql", "true")
-                    .addAnnotatedClass(Account.class)
-                    .addAnnotatedClass(Character.class);
+            configuration.getProperties().put("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
+            configuration.getProperties().put("hibernate.hbm2ddl.auto", "update");
+            configuration.getProperties().put("hibernate.show_sql", "true");
+            configuration.getProperties().put("hibernate.format_sql", "true");
+            configuration.getProperties().put("hibernate.use_sql_comments", "true");
+            configuration.getProperties().put("hibernate.connection.datasource", dataSource);
+            configuration.addAnnotatedClass(Account.class);
+            configuration.addAnnotatedClass(Game.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                    .applySetting("hibernate.connection.datasource", dataSource)
+                    .applySettings(configuration.getProperties())
                     .build();
 
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            System.out.println("sessionFactory is " + sessionFactory);
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }

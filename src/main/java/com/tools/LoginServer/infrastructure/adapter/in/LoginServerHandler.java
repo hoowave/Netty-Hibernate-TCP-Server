@@ -4,7 +4,7 @@ import com.tools.Common.exception.PacketException;
 import com.tools.Common.packet.InPacket;
 import com.tools.Common.packet.OutPacket;
 import com.tools.LoginServer.application.dto.LoginPacket;
-import com.tools.LoginServer.application.dto.PingPacket;
+import com.tools.LoginServer.application.dto.LoginPingPacket;
 import com.tools.LoginServer.application.port.in.LoginPort;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -25,8 +25,8 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
         OutPacket outPacket;
         switch (inPacket.getPacketOpcode()) {
             case PING:
-                var pingInPacket = new PingPacket.PingInPacket(inPacket);
-                outPacket = loginPort.ping(pingInPacket);
+                var loginPingInPacket = new LoginPingPacket.LoginPingInPacket(inPacket);
+                outPacket = loginPort.ping(loginPingInPacket);
                 break;
             case LOGIN:
                 var loginInPacket = new LoginPacket.LoginInPacket(inPacket);

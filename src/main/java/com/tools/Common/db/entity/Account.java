@@ -3,10 +3,9 @@ package com.tools.Common.db.entity;
 import com.tools.Common.db.entity.enums.AccountRole;
 import jakarta.persistence.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Entity
+@Table(name = "account")
 public class Account {
 
     @Id

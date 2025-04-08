@@ -3,6 +3,7 @@ package com.tools.Common.db.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "game")
 public class Game {
 
     @Id
@@ -39,6 +40,18 @@ public class Game {
                 ", playerY=" + playerY +
                 '}';
     }
+
+    public Game(){ }
+
+    public Game(Account user, String nickname, int level, int exp, int playerX, int playerY) {
+        this.user_id = user;
+        this.nickname = nickname;
+        this.level = level;
+        this.exp = exp;
+        this.playerX = playerX;
+        this.playerY = playerY;
+    }
+
 
     public String getUserId() {
         return user_id.getUserId();

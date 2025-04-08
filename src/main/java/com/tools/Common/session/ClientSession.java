@@ -1,5 +1,6 @@
 package com.tools.Common.session;
 
+import com.tools.Common.db.entity.Account;
 import com.tools.Common.db.entity.Game;
 import com.tools.Common.exception.PacketException;
 
@@ -9,35 +10,39 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientSession {
     private static final ClientSession INSTANCE = new ClientSession();
-    private Map<UUID, Game> session;
+    private Map<String, Account> loginSession;
+    private Map<String, Game> gameSession;
 
     private ClientSession() {
-        this.session = new ConcurrentHashMap<>();
+        this.loginSession = new ConcurrentHashMap<>();
+        this.gameSession = new ConcurrentHashMap<>();
     }
 
     public static ClientSession getInstance() {
         return INSTANCE;
     }
 
-    public void setLogin(UUID sessionUUID) {
-        System.out.println(sessionUUID);
-        session.put(sessionUUID, new Game());
+    public Account getLoginSession(String uuid) {
+        return loginSession.get(uuid);
     }
 
-    public void setCharacter(UUID sessionUUID, Game game) {
-        if (session.containsKey(sessionUUID)) {
-            session.put(sessionUUID, game);
+    public void setLogin(Account account) {
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        System.out.println(uuid);
+        loginSession.put(uuid, account);
+    }
+
+    public void setCharacter(String sessionUUID, Game game) {
+        if (loginSession.containsKey(sessionUUID)) {
+            gameSession.put(sessionUUID, game);
         } else {
             throw new PacketException("로그인되지 않은 유저입니다: " + sessionUUID);
         }
     }
 
-    public Game getCharacter(String userId) {
-        return session.get(userId);
-    }
-
-    public void logout(String userId) {
-        session.remove(userId);
+    public void logout(String uuid) {
+        loginSession.remove(uuid);
+        gameSession.remove(uuid);
     }
 
 }

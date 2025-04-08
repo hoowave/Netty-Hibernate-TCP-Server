@@ -2,7 +2,6 @@ package com.tools.LoginServer.infrastructure.adapter.out;
 
 import com.tools.Common.db.HibernateUtil;
 import com.tools.Common.db.entity.Account;
-import com.tools.Common.db.entity.Game;
 import com.tools.Common.exception.PacketException;
 import com.tools.LoginServer.application.port.out.LoginRepositoryPort;
 import jakarta.persistence.Query;

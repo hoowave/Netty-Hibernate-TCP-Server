@@ -6,16 +6,16 @@ import com.tools.Common.packet.enums.PacketHeader;
 import com.tools.Common.packet.enums.PacketOpcode;
 import com.tools.Common.packet.enums.ResponseCode;
 
-public class PingPacket {
+public class LoginPingPacket {
 
-    public static class PingInPacket extends InPacket {
-        public PingInPacket(InPacket inPacket) {
+    public static class LoginPingInPacket extends InPacket {
+        public LoginPingInPacket(InPacket inPacket) {
             super(inPacket);
         }
     }
 
-    public static class PingOutPacket extends OutPacket {
-        public PingOutPacket(ResponseCode responseCode, PacketOpcode packetOpcode, PacketHeader packetHeader) {
+    public static class LoginPingOutPacket extends OutPacket {
+        public LoginPingOutPacket(ResponseCode responseCode, PacketOpcode packetOpcode, PacketHeader packetHeader) {
             super(responseCode, packetOpcode, packetHeader);
         }
     }
