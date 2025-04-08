@@ -26,7 +26,12 @@ public class CharacterService implements CharacterPort {
     @Override
     public CharacterListPacket.CharacterListOutPacket list(CharacterListPacket.CharacterListInPacket characterListInPacket) {
         String decodeUuid = characterListInPacket.getDecodedUuid();
-        System.out.println(decodeUuid);
+        var account = ClientSession.getInstance().getLoginSession(decodeUuid);
+        var gameList = characterRepository.selectGameList(account.getUserId());
+        System.out.println(gameList.size());
+        gameList.forEach(game->{
+            System.out.println(game.toString());
+        });
         var characterListOutPacket = new CharacterListPacket.CharacterListOutPacket(characterListInPacket, PacketOpcode.SUCCESS, PacketHeader.CHARACTER_LIST_RESPONSE);
         return characterListOutPacket;
     }

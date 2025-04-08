@@ -2,15 +2,30 @@ package com.tools.CharacterServer.infrastructure.adapter.out;
 
 import com.tools.CharacterServer.application.port.out.CharacterRepositoryPort;
 import com.tools.Common.db.HibernateUtil;
+import com.tools.Common.db.entity.Account;
 import com.tools.Common.db.entity.Game;
 import com.tools.Common.exception.PacketException;
+import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class CharacterRepositoryAdapter implements CharacterRepositoryPort {
     @Override
-    public Game findByUserId(String userId) {
-        return null;
+    public List<Game> selectGameList(String userId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query query = session.createQuery("SELECT a FROM Account a LEFT JOIN FETCH a.gameList WHERE a.user_id = :userId", Account.class);
+            query.setParameter("userId", userId);
+            Account account = (Account) query.getSingleResult();
+            return account.getGameList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PacketException("캐릭터 목록 로딩 실패!");
+        } finally {
+            session.close();
+        }
     }
 
     @Override

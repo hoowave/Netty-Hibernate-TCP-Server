@@ -3,6 +3,9 @@ package com.tools.Common.db.entity;
 import com.tools.Common.db.entity.enums.AccountRole;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "account")
@@ -34,6 +37,9 @@ public class Account {
     @Column(nullable = false)
     private String created_At;
 
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<Game> gameList = new ArrayList<>();
+
     public Account() {}
 
     @Override
@@ -52,5 +58,9 @@ public class Account {
 
     public String getUserId(){
         return user_id;
+    }
+
+    public List<Game> getGameList(){
+        return gameList;
     }
 }
