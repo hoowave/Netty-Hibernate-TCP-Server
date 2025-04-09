@@ -86,7 +86,7 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
   Opcode: F1 (SUCCESS)
   Header: 02 (LOGIN_RESPONSE)
   ResponseType: 0x3031 (PACKET)
-  Body: UUID 세션 정보(수정예정)
+  Body: UUID 세션 정보
   ```
 
 ### 4. 캐릭터 관리
@@ -104,6 +104,20 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
   Header: 35 (CHARACTER_ADD_REQUEST)
   ResponseType: 01(Packet) / 02(Json)
   Body: UUID 세션 + "/" + 닉네임(Hex Encode)
+  ```
+- 캐릭터 선택:
+  ```
+  Opcode: 03 (CHARACTER)
+  Header: 33 (CHARACTER_INFO_REQUEST)
+  ResponseType: 01(Packet) / 02(Json)
+  Body: UUID 세션 + "/" + 캐릭터 ID(Hex Encode)
+  ```
+- 캐릭터 삭제:
+  ```
+  Opcode: 03 (CHARACTER)
+  Header: 37 (CHARACTER_REMOVE_REQUEST)
+  ResponseType: 01(Packet) / 02(Json)
+  Body: UUID 세션 + "/" + 캐릭터 ID(Hex Encode)
   ```
 
 ### 5. 게임 서버 연결
