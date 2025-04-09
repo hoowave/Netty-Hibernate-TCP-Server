@@ -23,6 +23,7 @@ index8 ~ : Body
 - `0x3031` : PING
 - `0x3032` : LOGIN
 - `0x3033` : CHARACTER
+- `0x3034` : GAME
 
 ### Header (액션 타입)
 - `0x3131` : PING_REQUEST
@@ -37,6 +38,8 @@ index8 ~ : Body
 - `0x3336` : CHARACTER_ADD_RESPONSE
 - `0x3337` : CHARACTER_REMOVE_REQUEST
 - `0x3338` : CHARACTER_REMOVE_RESPONSE
+- `0x3430` : GAME_MOVE_REQUEST
+- `0x3431` : GAME_EXP_REQUEST
 
 ### ResponseType (응답 타입)
 - `0x3031` : PACKET (패킷 기반 응답)
@@ -108,6 +111,30 @@ ResponseType: 0x3031 (PACKET)
 Body: 생성된 캐릭터 정보
 ```
 
+### 게임 이동 요청 (TBD)
+```
+Opcode: 0x3034 (GAME)
+Header: 0x3430 (GAME_MOVE_REQUEST)
+ResponseType: 0x3031 (PACKET)
+Body: UUID 세션 + "/" + X좌표 + "/" + Y좌표 (16진수로 인코딩)
+```
+
+### 게임 이동 응답 (TBD)
+```
+Opcode: 0x4631 (SUCCESS)
+Header: 0x3430 (GAME_MOVE_RESPONSE)
+ResponseType: 0x3031 (PACKET)
+Body: 이동된 위치 정보
+```
+
+### 게임 경험치 요청 (TBD)
+```
+Opcode: 0x3034 (GAME)
+Header: 0x3431 (GAME_EXP_REQUEST)
+ResponseType: 0x3031 (PACKET)
+Body: UUID 세션 + "/" + 획득 경험치 (16진수로 인코딩)
+```
+
 ## 패킷 처리 흐름
 
 1. **수신**: Netty 채널을 통한 패킷 수신
@@ -118,4 +145,7 @@ Body: 생성된 캐릭터 정보
 4. **응답**: 
    - ResponseType에 따라 PACKET 또는 JSON 형식으로 응답
    - PACKET 형식: 바이너리 데이터로 응답
-   - JSON 형식: JSON 문자열로 응답 
+   - JSON 형식: JSON 문자열로 응답
+5. **브로드캐스트** (게임 서버):
+   - UDP를 통한 다중 클라이언트 동시 전송
+   - 위치, 상태 변경 등의 실시간 정보 전달 

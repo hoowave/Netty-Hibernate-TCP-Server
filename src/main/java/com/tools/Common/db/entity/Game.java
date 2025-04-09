@@ -52,9 +52,31 @@ public class Game {
         this.playerY = playerY;
     }
 
+    public Long getId() {
+        return id;
+    }
 
     public String getUserId() {
         return account.getUserId();
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    public int getPlayerY() {
+        return playerY;
+    }
 }

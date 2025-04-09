@@ -9,11 +9,12 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 - **도메인 중심 설계**: 헥사고날 아키텍처를 통한 비즈니스 로직의 독립성 확보
 - **데이터 영속성**: Hibernate와 HikariCP를 활용한 효율적인 데이터베이스 연동
 - **보안**: JWT 기반의 사용자 인증 시스템
+- **실시간 통신**: UDP 기반의 게임 서버로 다중 클라이언트 동시 처리
 
 ## 포트 정보
 - 14101 : 로그인 서버(TCP)
 - 14102 : 캐릭터 서버(TCP)
-- 14103 : 게임 서버(UDP) / 예정
+- 14103 : 게임 서버(UDP)
 - 14104 : 메시지 서버(TCP) / 예정
 
 ## 구현 현황
@@ -34,11 +35,17 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 ### Character Server
 - [O] 캐릭터 조회
 - [O] 캐릭터 생성
-- [-] 캐릭터 삭제
+- [O] 캐릭터 삭제
+- [O] 캐릭터 선택 
 - [O] 데이터베이스 연동
 
 ### Game Server
-- [-] 설계 단계
+- [O] UDP 서버 구현
+- [O] Broadcast 구조 설계
+- [O] 패킷 구조 정의
+- [-] Player 이동 처리 (TBD)
+- [-] Player 경험치 획득 처리 (TBD)
+- [-] 실시간 위치 동기화 (TBD)
 
 ### 개발 예정 기능
 - [-] 패킷 암호화
@@ -46,7 +53,8 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 - [-] 성능 최적화
 - [-] 로그인 세션 관리 개선
 - [-] 사용자 권한 관리 시스템
-
+- [-] 게임 서버 부하 분산
+- [-] 게임 서버 상태 모니터링
 
 ## Flow
 
@@ -98,6 +106,15 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
   Body: UUID 세션 + "/" + 닉네임(Hex Encode)
   ```
 
+### 5. 게임 서버 연결
+- 클라이언트는 발급받은 UUID 세션을 사용하여 Game Server(포트 14003)와 UDP 통신
+- 게임 서버는 UDP를 통해 실시간으로 다중 클라이언트와 통신
+- 주요 기능 (TBD):
+  - Player 이동 처리
+  - Player 경험치 획득
+  - 실시간 위치 동기화
+  - 다중 클라이언트 브로드캐스트
+
 ## 패킷 구조
 자세한 패킷 구조는 [PACKET_STRUCTURE.md](docs/PACKET_STRUCTURE.md) 문서를 참고해주세요.
 
@@ -120,6 +137,7 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 3. **처리**: 도메인 로직을 통한 비즈니스 처리
 4. **영속화**: Hibernate와 HikariCP를 통한 데이터 저장
 5. **응답**: 처리 결과를 클라이언트에게 전송 (ResponseType에 따라 PACKET 또는 JSON 형식)
+6. **브로드캐스트** (게임 서버): UDP를 통한 다중 클라이언트 동시 전송
 
 ## 기술 스택
 
@@ -129,6 +147,7 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 - **HikariCP**: 고성능 JDBC 커넥션 풀
 - **JWT**: 사용자 인증 및 권한 관리
 - **Gradle**: 빌드 도구
+- **UDP**: 실시간 게임 통신
 
 ## 시작하기
 
@@ -157,6 +176,7 @@ Netty의 비동기 이벤트 처리와 Hibernate의 데이터 영속성을 결�
 - [Hibernate 공식 문서](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html)
 - [HikariCP 공식 문서](https://github.com/brettwooldridge/HikariCP)
 - [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/)
+- [UDP 통신 가이드](https://docs.oracle.com/javase/tutorial/networking/datagrams/)
 
 ## 라이선스
 

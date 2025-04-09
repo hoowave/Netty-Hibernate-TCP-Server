@@ -11,6 +11,8 @@ public enum PacketOpcode {
     LOGIN(0x3032),
 
     CHARACTER(0x3033),
+
+    GAME(0x3034),
     ;
 
     private final int value;

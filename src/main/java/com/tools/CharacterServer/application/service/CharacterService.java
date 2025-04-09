@@ -1,14 +1,13 @@
 package com.tools.CharacterServer.application.service;
 
-import com.tools.CharacterServer.application.dto.CharacterInsertPacket;
-import com.tools.CharacterServer.application.dto.CharacterListPacket;
-import com.tools.CharacterServer.application.dto.CharacterPingPacket;
+import com.tools.CharacterServer.application.dto.*;
 import com.tools.CharacterServer.application.port.in.CharacterPort;
 import com.tools.CharacterServer.application.port.out.CharacterRepositoryPort;
 import com.tools.Common.db.entity.Game;
 import com.tools.Common.packet.enums.PacketHeader;
 import com.tools.Common.packet.enums.PacketOpcode;
 import com.tools.Common.session.ClientSession;
+import com.tools.Common.session.PlayerState;
 
 public class CharacterService implements CharacterPort {
     private final CharacterRepositoryPort characterRepository;
@@ -28,11 +27,10 @@ public class CharacterService implements CharacterPort {
         String decodeUuid = characterListInPacket.getDecodedUuid();
         var account = ClientSession.getInstance().getLoginSession(decodeUuid);
         var gameList = characterRepository.selectGameList(account.getUserId());
-        System.out.println(gameList.size());
-        gameList.forEach(game->{
+        gameList.forEach(game -> {
             System.out.println(game.toString());
         });
-        var characterListOutPacket = new CharacterListPacket.CharacterListOutPacket(characterListInPacket, PacketOpcode.SUCCESS, PacketHeader.CHARACTER_LIST_RESPONSE);
+        var characterListOutPacket = new CharacterListPacket.CharacterListOutPacket(characterListInPacket, PacketOpcode.SUCCESS, PacketHeader.CHARACTER_LIST_RESPONSE, gameList);
         return characterListOutPacket;
     }
 
@@ -45,5 +43,27 @@ public class CharacterService implements CharacterPort {
         characterRepository.insert(game);
         var characterInsertOutPacket = new CharacterInsertPacket.CharacterInsertOutPacket(characterInsertInPacket, PacketOpcode.SUCCESS, PacketHeader.CHARACTER_ADD_RESPONSE);
         return characterInsertOutPacket;
+    }
+
+    @Override
+    public CharacterDeletePacket.CharacterDeleteOutPacket delete(CharacterDeletePacket.CharacterDeleteInPacket characterDeleteInPacket) {
+        String decodeUuid = characterDeleteInPacket.getDecodedUuid();
+        String decodeNickname = characterDeleteInPacket.getDecodedNickname();
+        var account = ClientSession.getInstance().getLoginSession(decodeUuid);
+        characterRepository.delete(account.getId(), decodeNickname);
+        var characterDeleteOutPacket = new CharacterDeletePacket.CharacterDeleteOutPacket(characterDeleteInPacket, PacketOpcode.SUCCESS, PacketHeader.CHARACTER_REMOVE_RESPONSE);
+        return characterDeleteOutPacket;
+    }
+
+    @Override
+    public CharacterSelectPacket.CharacterSelectOutPacket select(CharacterSelectPacket.CharacterSelectInPacket characterSelectInPacket) {
+        String decodeUuid = characterSelectInPacket.getDecodedUuid();
+        String decodeNickname = characterSelectInPacket.getDecodedNickname();
+        var account = ClientSession.getInstance().getLoginSession(decodeUuid);
+        var game = characterRepository.findGame(account.getId(), decodeNickname);
+        var playerState = new PlayerState(game);
+        ClientSession.getInstance().setGame(decodeUuid, playerState);
+        var characterSelectOutPacket = new CharacterSelectPacket.CharacterSelectOutPacket(characterSelectInPacket, PacketOpcode.SUCCESS, PacketHeader.CHARACTER_SELECT_RESPONSE);
+        return characterSelectOutPacket;
     }
 }

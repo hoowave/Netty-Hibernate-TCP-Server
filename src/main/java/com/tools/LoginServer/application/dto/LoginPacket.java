@@ -14,12 +14,10 @@ public class LoginPacket {
 
     public static class LoginInPacket extends InPacket {
         private String decodedToken;
-        private ByteBuf encodedToken;
 
         public LoginInPacket(InPacket inPacket) {
             super(inPacket);
             this.decodedToken = decodeToken(inPacket.getBody());
-            this.encodedToken = encodeToken(this.decodedToken);
         }
 
         public String decodeToken(byte[] token) {
@@ -33,8 +31,8 @@ public class LoginPacket {
             return sb.toString().trim();
         }
 
-        public ByteBuf encodeToken(String token) {
-            byte[] bytes = token.getBytes(StandardCharsets.UTF_8);
+        public ByteBuf encodeUuid(String uuid) {
+            byte[] bytes = uuid.getBytes(StandardCharsets.UTF_8);
             StringBuilder hexString = new StringBuilder();
             for (byte b : bytes) {
                 hexString.append(String.format("%02X ", b));
@@ -49,22 +47,17 @@ public class LoginPacket {
             return decodedToken;
         }
 
-        public ByteBuf getEncodedToken() {
-            return encodedToken;
-        }
-
-
     }
 
     public static class LoginOutPacket extends OutPacket {
 
-        public LoginOutPacket(LoginInPacket loginInPacket, PacketOpcode packetOpcode, PacketHeader packetHeader) {
+        public LoginOutPacket(LoginInPacket loginInPacket, PacketOpcode packetOpcode, PacketHeader packetHeader, String uuid) {
             super(loginInPacket.getResponseCode(), packetOpcode, packetHeader);
             if(loginInPacket.getResponseCode() == ResponseCode.PACKET){
-                super.setByteBuf(loginInPacket.getEncodedToken());
+                super.setByteBuf(loginInPacket.encodeUuid(uuid));
             }
             if(loginInPacket.getResponseCode() == ResponseCode.JSON){
-                super.setJsonMap(loginInPacket.getDecodedToken());
+                super.setJsonMap(uuid);
             }
         }
 

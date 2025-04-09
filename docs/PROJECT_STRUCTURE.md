@@ -47,6 +47,27 @@ TcpServer/
 │   │   │           │   │   │   └── out/
 │   │   │           │   │   │       └── CharacterRepositoryAdapter.java # 캐릭터 저장소 어댑터
 │   │   │           │   └── CharacterServer.java                 # 캐릭터 서버 진입점
+│   │   │           ├── GameServer/
+│   │   │           │   ├── application/
+│   │   │           │   │   ├── dto/
+│   │   │           │   │   │   ├── GameMovePacket.java        # 플레이어 이동 패킷
+│   │   │           │   │   │   ├── GameExpPacket.java         # 경험치 획득 패킷
+│   │   │           │   │   │   ├── GameLevelPacket.java       # 레벨업 패킷
+│   │   │           │   │   │   └── GamePingPacket.java        # PING 패킷
+│   │   │           │   │   ├── port/
+│   │   │           │   │   │   ├── in/
+│   │   │           │   │   │   │   └── GamePort.java          # 게임 포트 인터페이스
+│   │   │           │   │   │   └── out/
+│   │   │           │   │   │       └── GameRepositoryPort.java # 게임 저장소 포트
+│   │   │           │   │   └── service/
+│   │   │           │   │       └── GameService.java           # 게임 서비스 구현
+│   │   │           │   ├── infrastructure/
+│   │   │           │   │   ├── adapter/
+│   │   │           │   │   │   ├── in/
+│   │   │           │   │   │   │   └── GameServerHandler.java # 게임 서버 핸들러
+│   │   │           │   │   │   └── out/
+│   │   │           │   │   │       └── GameRepositoryAdapter.java # 게임 저장소 어댑터
+│   │   │           │   └── GameServer.java                     # 게임 서버 진입점
 │   │   │           ├── LoginServer/
 │   │   │           │   ├── application/
 │   │   │           │   │   ├── dto/
@@ -108,6 +129,18 @@ TcpServer/
   - Netty 서버 설정 및 초기화
   - 포트 14102 사용
 
+### GameServer 패키지
+- **application**: 비즈니스 로직
+  - `dto`: 데이터 전송 객체
+  - `port`: 포트 인터페이스
+  - `service`: 서비스 구현체
+- **infrastructure**: 인프라스트럭처
+  - `adapter`: 어댑터 구현
+- **GameServer**: 서버 진입점
+  - Netty UDP 서버 설정 및 초기화
+  - 포트 14103 사용
+  - 브로드캐스트 기능 구현
+
 ### LoginServer 패키지
 - **application**: 비즈니스 로직
   - `dto`: 데이터 전송 객체
@@ -118,3 +151,18 @@ TcpServer/
 - **LoginServer**: 서버 진입점
   - Netty 서버 설정 및 초기화
   - 포트 14101 사용
+
+## 의존성 관리
+- **Spring Boot 3.2.3**: 웹 애플리케이션 프레임워크
+- **Netty 4.1.107**: 비동기 이벤트 기반 네트워크 프레임워크
+- **Hibernate 6.3.1**: JPA 구현체
+- **HikariCP 6.2.1**: 고성능 JDBC 커넥션 풀
+- **JWT 0.11.5**: JSON Web Token 인증
+- **Lombok 1.18.30**: 코드 간소화
+- **JUnit 5.10.2**: 단위 테스트
+
+## 포트 정보
+- **14101**: 로그인 서버 (TCP)
+- **14102**: 캐릭터 서버 (TCP)
+- **14103**: 게임 서버 (UDP)
+- **14104**: 메시지 서버 (TCP) / 예정

@@ -45,4 +45,41 @@ public class CharacterRepositoryAdapter implements CharacterRepositoryPort {
             session.close();
         }
     }
+
+    @Override
+    public void delete(Long accountId, String nickname) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery("DELETE FROM Game g WHERE g.account.id = :accountId AND g.nickname = :nickname");
+            query.setParameter("accountId", accountId);
+            query.setParameter("nickname", nickname);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+            throw new PacketException("캐릭터 삭제 실패!");
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public Game findGame(Long accountId, String nickname) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query query = session.createQuery("SELECT g FROM Game g JOIN FETCH g.account WHERE g.account.id = :accountId AND g.nickname = :nickname", Game.class);
+            query.setParameter("accountId", accountId);
+            query.setParameter("nickname", nickname);
+            Game game = (Game) query.getSingleResult();
+            return game;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PacketException("캐릭터 목록 로딩 실패!");
+        } finally {
+            session.close();
+        }
+    }
 }

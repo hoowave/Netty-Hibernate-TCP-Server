@@ -56,6 +56,10 @@ public class Account {
                 '}';
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getUserId(){
         return user_id;
     }

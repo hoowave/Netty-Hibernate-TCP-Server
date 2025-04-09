@@ -28,8 +28,8 @@ public class LoginService implements LoginPort {
         String decodeToken = loginInPacket.getDecodedToken();
         String userId = jwtUtil.validateToken(decodeToken);
         var account = loginRepositoryPort.findByUserId(userId);
-        ClientSession.getInstance().setLogin(account);
-        var loginOutPacket = new LoginPacket.LoginOutPacket(loginInPacket, PacketOpcode.SUCCESS, PacketHeader.LOGIN_RESPONSE);
+        String uuid = ClientSession.getInstance().setLogin(account);
+        var loginOutPacket = new LoginPacket.LoginOutPacket(loginInPacket, PacketOpcode.SUCCESS, PacketHeader.LOGIN_RESPONSE, uuid);
         return loginOutPacket;
     }
 }

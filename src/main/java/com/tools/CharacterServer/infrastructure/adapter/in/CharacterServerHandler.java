@@ -1,9 +1,6 @@
 package com.tools.CharacterServer.infrastructure.adapter.in;
 
-import com.tools.CharacterServer.application.dto.CharacterInsertPacket;
-import com.tools.CharacterServer.application.dto.CharacterListPacket;
-import com.tools.CharacterServer.application.dto.CharacterPacket;
-import com.tools.CharacterServer.application.dto.CharacterPingPacket;
+import com.tools.CharacterServer.application.dto.*;
 import com.tools.CharacterServer.application.port.in.CharacterPort;
 import com.tools.Common.exception.PacketException;
 import com.tools.Common.packet.InPacket;
@@ -41,6 +38,14 @@ public class CharacterServerHandler extends SimpleChannelInboundHandler<ByteBuf>
                 if (characterInPacket.getPacketHeader() == PacketHeader.CHARACTER_ADD_REQUEST){
                     var characterInsertPacket = new CharacterInsertPacket.CharacterInsertInPacket(inPacket);
                     outPacket = characterPort.insert(characterInsertPacket);
+                }
+                if(characterInPacket.getPacketHeader() == PacketHeader.CHARACTER_REMOVE_REQUEST){
+                    var characterDeletePacket = new CharacterDeletePacket.CharacterDeleteInPacket(inPacket);
+                    outPacket = characterPort.delete(characterDeletePacket);
+                }
+                if(characterInPacket.getPacketHeader() == PacketHeader.CHARACTER_SELECT_REQUEST){
+                    var characterSelectPacket = new CharacterSelectPacket.CharacterSelectInPacket(inPacket);
+                    outPacket = characterPort.select(characterSelectPacket);
                 }
                 break;
             default:
